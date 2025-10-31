@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  web:
+    image: yourdockerhubuser/travel-blog:latest  # or specific tag
+    restart: always
+    environment:
+      - DJANGO_SETTINGS_MODULE=travel_blog.settings.production
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
+    ports:
+      - "8000:8000"
+    volumes:
+      - media:/app/media
+
+volumes:
+  media:

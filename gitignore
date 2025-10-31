@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+.eggs/
+
+# Django
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+.env
+.env.local
+.env.prod
+.env.dev
+.vscode/
+.idea/
+.DS_Store
+
+# Docker
+*.pid
+*.seed
+*.pid.lock
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Byte-compiled
+*.py[cod]
+__pycache__/
+
+# Tests / coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# AWS
+*.pem
+private_keys/
+cloudfront_keys/
+*.key
+*.crt
+
+# Node / React (if frontend added later)
+node_modules/
+build/
+dist/
+
+# Virtual environment
+venv/
+.env/
+.envrc
