@@ -2,17 +2,17 @@ version: '3.8'
 
 services:
   web:
-    image: yourdockerhubuser/travel-blog:latest  # Jenkins updates this image
-    container_name: travel_web
+    image: narasimhakini7/dj_travel_app:latest   # ✅ your real Docker Hub repo
+    container_name: dj_travel_app
     restart: always
     env_file:
       - .env
     environment:
-      - DJANGO_SETTINGS_MODULE=travel_blog.settings.production
-    command: >
+      - DJANGO_SETTINGS_MODULE=dj_travel_app.settings.production
+    command: 
       sh -c "
         python manage.py migrate &&
-        gunicorn travel_blog.wsgi:application --bind 0.0.0.0:8000 --workers 3
+        gunicorn dj_travel_app.wsgi:application --bind 0.0.0.0:8000 --workers 3
       "
     expose:
       - "8000"
@@ -42,9 +42,9 @@ services:
     container_name: travel_db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-travel}
-      POSTGRES_USER: ${POSTGRES_USER:-traveluser}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-travelpass}
+      POSTGRES_DB: dj_travel_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Kini@456789
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -52,3 +52,4 @@ volumes:
   pgdata:
   static_volume:
   media_volume:
+

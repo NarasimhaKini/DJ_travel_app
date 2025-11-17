@@ -1,17 +1,26 @@
 version: '3.8'
+
 services:
   web:
-    image: yourdockerhubuser/travel-blog:latest  # or specific tag
+    image: narasimhakini7/dj_travel_app:latest   # ✅ your real Docker Hub repo
+    container_name: dj_travel_app
     restart: always
+
+    env_file:
+      - .env   # load all variables from .env
+
     environment:
-      - DJANGO_SETTINGS_MODULE=travel_blog.settings.production
-      - SECRET_KEY=${SECRET_KEY}
-      - DATABASE_URL=${DATABASE_URL}
-      - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
+      DJANGO_SETTINGS_MODULE: "dj_travel_app.settings.prod"
+      SECRET_KEY: "$jgg7sm6eh1#t468u&l8h=9dojp+c%moi3u@#+)n#24+o@-ot7a"
+      DATABASE_URL: "$postgres://:Kini@456789@db:5432/travel_dev_db"
+      AWS_STORAGE_BUCKET_NAME: "$dj-travel-app-media"
+
     ports:
       - "8000:8000"
+
     volumes:
       - media:/app/media
 
 volumes:
   media:
+
