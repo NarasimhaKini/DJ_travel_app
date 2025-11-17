@@ -5,8 +5,7 @@ __pycache__/
 
 .env
 .env.*
-!env.production
-
+.env.production
 
 settin.py
 # C extensions
