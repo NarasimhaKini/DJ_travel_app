@@ -3,6 +3,12 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+.env
+.env.*
+!env.production
+
+
+settin.py
 # C extensions
 *.so
 
