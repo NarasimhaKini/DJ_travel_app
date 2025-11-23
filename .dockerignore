@@ -1,0 +1,14 @@
+.vscode
+.vscode-server
+.git
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.db
+*.sqlite3
+.env
+env/
+venv/
+.history

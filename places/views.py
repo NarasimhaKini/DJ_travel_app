@@ -5,7 +5,8 @@ from django.core.serializers import serialize
 
 def map_view(request):
     # Server-rendered page including map; JS will fetch /api/places/
-    return render(request, 'places/map.html')
+    return render(request, 'places/maps.html')
+
 
 def places_api(request):
     # Return places with minimal fields and photo counts + thumbnails (first photo)

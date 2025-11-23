@@ -2,23 +2,28 @@ version: '3.8'
 
 services:
   web:
-    image: narasimhakini7/dj_travel_app:latest   # ✅ your real Docker Hub repo
+    build: .
     container_name: dj_travel_app
     restart: always
+
     env_file:
       - .env
+
     environment:
-      - DJANGO_SETTINGS_MODULE=dj_travel_app.settings.production
-    command: 
-      sh -c "
-        python manage.py migrate &&
-        gunicorn dj_travel_app.wsgi:application --bind 0.0.0.0:8000 --workers 3
-      "
-    expose:
-      - "8000"
+      - DJANGO_SETTINGS_MODULE=dj_travel_app.settings.dev
+
+    command: |
+      sh -c "python manage.py migrate &&
+             gunicorn dj_travel_app.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+
+    ports:
+      - "8000:8000"
+
     depends_on:
       - db
+
     volumes:
+      - .:/app                              # <--- FIXED
       - static_volume:/app/staticfiles
       - media_volume:/app/media
 
@@ -28,7 +33,6 @@ services:
     restart: always
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - static_volume:/app/staticfiles
       - media_volume:/app/media
@@ -36,15 +40,14 @@ services:
     depends_on:
       - web
 
-  # Optional: Use RDS instead for production (recommended)
   db:
     image: postgres:15
     container_name: travel_db
-    restart: unless-stopped
+    restart: always
     environment:
       POSTGRES_DB: dj_travel_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Kini@456789
+      POSTGRES_PASSWORD: "Kini_456789"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -52,4 +55,3 @@ volumes:
   pgdata:
   static_volume:
   media_volume:
-
