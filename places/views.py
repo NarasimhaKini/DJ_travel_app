@@ -2,6 +2,37 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from .models import Place
 from django.core.serializers import serialize
+from rest_framework import generics
+from .models import Place, Photo
+from .serializers import PlaceSerializer, PhotoSerializer
+
+class PlaceCreateAPIView(generics.CreateAPIView):
+    queryset = Place.objects.all()
+    serializer_class = PlaceSerializer
+
+class PhotoCreateAPIView(generics.CreateAPIView):
+    queryset = Photo.objects.all()
+    serializer_class = PhotoSerializer
+
+
+class PhotoListAPIView(generics.ListAPIView):
+    queryset = Place.objects.prefetch_related('photos').all()
+    serializer_class = PlaceSerializer
+
+class PlaceListAPIView(generics.ListCreateAPIView):
+    queryset = Place.objects.all()
+    serializer_class = PlaceSerializer
+
+
+class PlaceDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Place.objects.all()
+    serializer_class = PlaceSerializer
+    lookup_field = 'slug'
+
+class PhotoDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Photo.objects.all()
+    serializer_class = PlaceSerializer
+    lookup_field = 'slug'
 
 def map_view(request):
     # Server-rendered page including map; JS will fetch /api/places/

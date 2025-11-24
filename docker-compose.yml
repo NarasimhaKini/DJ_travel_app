@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: travel_pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: narasimhakini4@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: Kini_456789
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
   web:
     build: .
     container_name: dj_travel_app
@@ -10,11 +22,14 @@ services:
       - .env
 
     environment:
-      - DJANGO_SETTINGS_MODULE=dj_travel_app.settings.dev
+      DJANGO_SETTINGS_MODULE: dj_travel_app.settings.prod
 
-    command: |
-      sh -c "python manage.py migrate &&
-             gunicorn dj_travel_app.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+    command: >
+      sh -c "
+      python manage.py collectstatic --noinput &&
+      python manage.py migrate &&
+      gunicorn dj_travel_app.wsgi:application --bind 0.0.0.0:8000 --workers 3
+      "
 
     ports:
       - "8000:8000"
@@ -23,9 +38,9 @@ services:
       - db
 
     volumes:
-      - .:/app                              # <--- FIXED
-      - static_volume:/app/staticfiles
-      - media_volume:/app/media
+      - .:/app                                  # Your project
+      - static_volume:/app/staticfiles          # Static files
+      - media_volume:/app/media                 # Media files
 
   nginx:
     image: nginx:stable
@@ -33,10 +48,12 @@ services:
     restart: always
     ports:
       - "80:80"
+
     volumes:
       - static_volume:/app/staticfiles
       - media_volume:/app/media
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
     depends_on:
       - web
 
@@ -45,9 +62,9 @@ services:
     container_name: travel_db
     restart: always
     environment:
-      POSTGRES_DB: dj_travel_db
+      POSTGRES_DB: dj_travel_db        # Must match your DATABASE_URL
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: "Kini_456789"
+      POSTGRES_PASSWORD: Kini_456789
     volumes:
       - pgdata:/var/lib/postgresql/data
 
