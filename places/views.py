@@ -16,8 +16,8 @@ class PhotoCreateAPIView(generics.CreateAPIView):
 
 
 class PhotoListAPIView(generics.ListAPIView):
-    queryset = Place.objects.prefetch_related('photos').all()
-    serializer_class = PlaceSerializer
+    queryset = Photo.objects.all()
+    serializer_class = PhotoSerializer
 
 class PlaceListAPIView(generics.ListCreateAPIView):
     queryset = Place.objects.all()
